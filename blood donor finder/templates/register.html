@@ -1,0 +1,50 @@
+<a href="/">Home</a> |
+<a href="/register">Register Donor</a> |
+<a href="/search">Search Blood</a>
+<hr>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Donor</title>
+     <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>Register Donor</h2>
+
+<form method="POST">
+
+Name:
+<input type="text" name="name"><br><br>
+
+Gender:
+<input type="text" name="gender"><br><br>
+
+Age:
+<input type="number" name="age"><br><br>
+
+Email:
+<input type="email" name="email"><br><br>
+
+District:
+<input type="text" name="district"><br><br>
+
+City:
+<input type="text" name="city"><br><br>
+
+Blood Group:
+<input type="text" name="blood_group"><br><br>
+
+Months Since Last Donation:
+<input type="number" name="months"><br><br>
+
+<button type="submit">
+Register
+</button>
+
+</form>
+
+</body>
+</html>
