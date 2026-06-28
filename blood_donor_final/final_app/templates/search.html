@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Search Donors{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="page-header">
+    <h2>Search Blood Donors</h2>
+    <p>Find available donors by blood group across Jammu &amp; Kashmir.</p>
+  </div>
+
+  <!-- Search form -->
+  <form method="POST">
+    <div class="card" style="padding: 1.5rem 2rem;">
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="blood_group">Blood Group</label>
+          <select name="blood_group" id="blood_group" required>
+            <option value="" disabled {% if not query_bg %}selected{% endif %}>Select type</option>
+            {% for bg in ["A+","A-","B+","B-","AB+","AB-","O+","O-"] %}
+            <option value="{{ bg }}" {% if query_bg == bg %}selected{% endif %}>{{ bg }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="district">District <span class="text-muted text-small">(optional)</span></label>
+          <select name="district" id="district">
+            <option value="">All Districts</option>
+            {% for d in districts %}
+            <option value="{{ d }}" {% if query_dist == d %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+      </div>
+      <div style="margin-top: 1.25rem;">
+        <button type="submit" class="btn btn-primary">Search Donors</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Results -->
+  {% if searched %}
+
+    {% if donors %}
+
+      <div class="results-header">
+        <span class="count">{{ donors|length }} donor{{ 's' if donors|length != 1 }}</span>
+        <span class="meta">
+          with blood group <strong>{{ query_bg }}</strong>
+          {% if query_dist %}in <strong>{{ query_dist }}</strong>{% endif %}
+          · sorted by most recent donation
+        </span>
+      </div>
+
+      <div class="donor-grid">
+        {% for donor in donors %}
+        <div class="donor-tile">
+
+          <!-- Blood type is the hero -->
+          <div class="blood-type">{{ donor['Blood_group'] }}</div>
+
+          <div class="donor-name">{{ donor['Name'] }}</div>
+
+          <div class="tile-divider"></div>
+
+          <div class="donor-meta">
+
+            <div class="meta-row">
+              <span class="label">Location</span>
+              <span class="value">
+                {{ donor['City'] }}{% if donor['City'] and donor['District'] %}, {% endif %}{{ donor['District'] }}
+              </span>
+            </div>
+
+            <div class="meta-row">
+              <span class="label">Age</span>
+              <span class="value">{{ donor['Age'] or '—' }}</span>
+            </div>
+
+            {% if donor['Months_since_last_donation'] is not none %}
+            <div class="meta-row">
+              <span class="label">Last gave</span>
+              <span class="value">{{ donor['Months_since_last_donation'] }} month{{ 's' if donor['Months_since_last_donation'] != 1 }} ago</span>
+            </div>
+            {% endif %}
+
+          </div>
+
+          <!-- Phone is the action -->
+          {% if donor['Phone'] %}
+          <a class="phone-link" href="tel:{{ donor['Phone'] }}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 style="flex-shrink:0;">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.1 2.18 2 2 0 012.1 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+            </svg>
+            {{ donor['Phone'] }}
+          </a>
+          {% else %}
+          <span class="text-muted text-small" style="margin-top:0.5rem;">No phone listed</span>
+          {% endif %}
+
+        </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+
+      <div class="empty-state" style="margin-top: 2rem;">
+        <div class="empty-icon">◎</div>
+        <h3>No donors found</h3>
+        <p>
+          No <strong>{{ query_bg }}</strong> donors
+          {% if query_dist %}in <strong>{{ query_dist }}</strong>{% endif %}.
+          Try removing the district filter.
+        </p>
+      </div>
+
+    {% endif %}
+
+  {% endif %}
+
+</div>
+{% endblock %}

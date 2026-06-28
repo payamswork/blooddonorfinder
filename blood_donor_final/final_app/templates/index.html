@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Blood Donor Finder{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+
+    <div class="hero-eyebrow">J&amp;K Blood Network</div>
+
+    <h1>
+      Find a Donor.<br>
+      Save <span class="accent">Lives.</span>
+    </h1>
+
+    <p class="hero-sub">
+      A fast, honest system to find and register blood donors
+      across Jammu &amp; Kashmir.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/register" class="btn btn-primary">Register as Donor</a>
+      <a href="/search"   class="btn btn-secondary">Search Blood</a>
+    </div>
+
+    <!-- Blood type strip — visual depth without clutter -->
+    <div class="blood-types-row" style="margin-top: 3.5rem;">
+      {% for bt in ["A+", "A−", "B+", "B−", "AB+", "AB−", "O+", "O−"] %}
+      <div class="blood-type-chip">
+        <div class="bt-label">{{ bt }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- How it works -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Search by Blood Group</h3>
+      <p>Choose the blood type needed and optionally filter by district to see matching donors instantly.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Contact Directly</h3>
+      <p>Each result shows a phone number and email so you can reach the donor without any middleman.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Register Yourself</h3>
+      <p>Sign up and add your details to help others find you when they need your blood group.</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

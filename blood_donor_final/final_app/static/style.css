@@ -1,0 +1,941 @@
+/* ============================================================
+   BLOOD DONOR FINDER — style.css
+   Philosophy: structural minimalism with depth.
+   No gradients, no pill shapes, no drop-shadow soup.
+   Depth through spacing, border weight, and contrast.
+   ============================================================ */
+
+/* ── Design Tokens ── */
+:root {
+  --red:          #C0152A;   /* medical, passionate, not garish */
+  --red-dark:     #96101F;
+  --red-muted:    #f7e8ea;
+  --ink:          #0f0f0f;
+  --ink-2:        #3a3a3a;
+  --ink-3:        #717171;
+  --ink-4:        #a8a8a8;
+  --surface:      #ffffff;
+  --bg:           #f6f4f2;   /* warm off-white — not clinical pure white */
+  --border:       #e2dedd;
+  --border-strong:#c8c2bf;
+  --font:         -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                  "Helvetica Neue", Arial, sans-serif;
+  --mono:         "SF Mono", "Fira Code", "Courier New", monospace;
+  --radius:       4px;
+  --nav-h:        56px;
+  --container:    860px;
+  --transition:   0.18s ease;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button, input, select, textarea { font-family: inherit; }
+
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--nav-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+/* The single drop of red — the brand mark */
+.nav-brand::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.nav-links a {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  transition: color var(--transition), background var(--transition);
+  letter-spacing: 0.005em;
+}
+.nav-links a:hover { color: var(--ink); background: var(--bg); }
+.nav-links a.active {
+  color: var(--red);
+  font-weight: 600;
+}
+
+/* Auth button in nav */
+.nav-links .nav-cta {
+  margin-left: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+}
+.nav-links .nav-cta:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+
+/* ================================================================
+   LAYOUT
+   ================================================================ */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  flex: 1;
+}
+
+/* Tighter container for forms */
+.container--narrow {
+  max-width: 520px;
+}
+
+/* Page header block */
+.page-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.page-header h1, .page-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.page-header p {
+  color: var(--ink-3);
+  font-size: 0.9rem;
+}
+
+
+/* ================================================================
+   FLASH / ALERTS
+   ================================================================ */
+.alerts { margin-bottom: 1.5rem; }
+.alert {
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+.alert.success {
+  background: #f0faf4;
+  border-color: #a8d5b8;
+  color: #1a5c30;
+}
+.alert.error {
+  background: var(--red-muted);
+  border-color: #e8adb5;
+  color: var(--red-dark);
+}
+.alert.info {
+  background: #f0f4ff;
+  border-color: #b8c8f0;
+  color: #1a2f80;
+}
+
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Primary — the red action, used sparingly */
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+.btn-primary:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+}
+
+/* Secondary — neutral */
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+.btn-secondary:hover {
+  background: var(--bg);
+  border-color: var(--ink-3);
+}
+
+/* Ghost — text only feel */
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border-color: transparent;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.btn-ghost:hover { color: var(--ink); background: var(--bg); }
+
+/* Full-width helper */
+.btn-full { width: 100%; }
+
+/* Submit buttons inside forms default to primary */
+button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.6rem;
+  background: var(--red);
+  color: #fff;
+  border: 1.5px solid var(--red);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  letter-spacing: 0.01em;
+}
+button[type="submit"]:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+}
+
+
+/* ================================================================
+   CARDS
+   ================================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Accent left border — for callouts */
+.card--accent {
+  border-left: 3px solid var(--red);
+  padding-left: calc(2rem - 2px);  /* compensate for extra border width */
+}
+
+
+/* ================================================================
+   FORMS
+   ================================================================ */
+.form-section {
+  margin-bottom: 2.25rem;
+}
+
+.form-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-4);
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+.form-grid--single { grid-template-columns: 1fr; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 0.005em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  color: var(--ink);
+  transition: border-color var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+  line-height: 1.4;
+}
+
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23717171' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(192, 21, 42, 0.08);
+}
+
+.form-group input::placeholder { color: var(--ink-4); }
+
+.form-hint {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-top: 0.2rem;
+}
+
+/* Form footer (buttons row) */
+.form-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Eligibility notice box */
+.eligibility-note {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--red-muted);
+  border-left: 3px solid var(--red);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.eligibility-note strong { color: var(--red-dark); }
+
+
+/* ================================================================
+   SEARCH RESULTS  — the most important UI surface
+   ================================================================ */
+.results-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  margin-top: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.results-header .count {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.results-header .meta {
+  font-size: 0.875rem;
+  color: var(--ink-3);
+}
+
+/* Grid of donor cards */
+.donor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;                 /* hairline grid lines — structural depth */
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.donor-tile {
+  background: var(--surface);
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  transition: background var(--transition);
+}
+.donor-tile:hover { background: #fffaf9; }
+
+/* Blood group — the hero element of each tile */
+.donor-tile .blood-type {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--red);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.donor-tile .donor-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.donor-tile .donor-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.donor-tile .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.donor-tile .meta-row .label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.donor-tile .meta-row .value {
+  color: var(--ink-2);
+  font-size: 0.85rem;
+}
+
+/* Phone — make it prominent and tappable */
+.donor-tile .phone-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--red);
+  margin-top: 0.5rem;
+  transition: color var(--transition);
+}
+.donor-tile .phone-link:hover { color: var(--red-dark); }
+
+/* Divider line within tile */
+.donor-tile .tile-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.25rem 0;
+}
+
+/* Availability badge */
+.avail-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+}
+.avail-badge.yes {
+  background: #e8f5ee;
+  color: #1a6635;
+}
+.avail-badge.no {
+  background: #f5e8e8;
+  color: #8a2020;
+}
+
+
+/* ================================================================
+   TABLE (All Donors page)
+   ================================================================ */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  overflow-x: auto;
+  background: var(--surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+thead th {
+  background: var(--ink);
+  color: #fff;
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+thead th:first-child { width: 48px; }
+
+tbody td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-2);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fffaf9; }
+
+td.blood-cell {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--red);
+  letter-spacing: -0.01em;
+}
+td.id-cell { color: var(--ink-4); font-size: 0.78rem; }
+td.name-cell { font-weight: 600; color: var(--ink); }
+td.phone-cell a { color: var(--red); }
+td.phone-cell a:hover { text-decoration: underline; }
+
+
+/* ================================================================
+   PAGINATION
+   ================================================================ */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.pagination a,
+.pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  background: var(--surface);
+  transition: border-color var(--transition), color var(--transition),
+              background var(--transition);
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.pagination .pg-current {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  font-weight: 700;
+}
+
+.pagination .pg-ellipsis {
+  border: none;
+  background: none;
+  color: var(--ink-4);
+  cursor: default;
+}
+
+
+/* ================================================================
+   EMPTY STATE
+   ================================================================ */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--ink-3);
+}
+
+.empty-state .empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  font-size: 0.875rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+
+/* ================================================================
+   HOME PAGE
+   ================================================================ */
+.hero {
+  padding: 5rem 0 4.5rem;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  margin-bottom: 1.5rem;
+}
+
+/* The small horizontal rule before the eyebrow */
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.5;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 1.1rem;
+}
+
+/* The word "Lives" in red — one word of accent */
+.hero h1 .accent { color: var(--red); }
+
+.hero .hero-sub {
+  font-size: 1rem;
+  color: var(--ink-3);
+  max-width: 380px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Blood type visual row */
+.blood-types-row {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-top: 4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.blood-type-chip {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  flex: 1;
+  min-width: 60px;
+  border-right: 1px solid var(--border);
+  transition: background var(--transition);
+}
+.blood-type-chip:last-child { border-right: none; }
+.blood-type-chip:hover { background: var(--bg); }
+
+.blood-type-chip .bt-label {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--red);
+  letter-spacing: -0.02em;
+}
+
+.blood-type-chip .bt-sub {
+  font-size: 0.65rem;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
+}
+
+/* Divider */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 3rem 0;
+}
+
+/* How it works — 3 steps */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.step {
+  padding: 1.75rem 1.5rem;
+  border-right: 1px solid var(--border);
+}
+.step:last-child { border-right: none; }
+
+.step-num {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  margin-bottom: 0.75rem;
+}
+
+.step h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+.step p {
+  font-size: 0.83rem;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+
+/* ================================================================
+   AUTH PAGES (Login / Signup)
+   ================================================================ */
+.auth-wrap {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-box .auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-box .auth-header .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.auth-box .auth-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+
+.auth-box .auth-header p {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+.auth-box .card {
+  padding: 2rem;
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.83rem;
+  color: var(--ink-3);
+}
+.auth-switch a { color: var(--red); font-weight: 600; }
+.auth-switch a:hover { text-decoration: underline; }
+
+
+/* ================================================================
+   SUCCESS PAGE
+   ================================================================ */
+.success-wrap {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.success-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--red-muted);
+  margin-bottom: 1.5rem;
+}
+
+.success-mark svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--red);
+  stroke-width: 2.5;
+  fill: none;
+}
+
+.success-wrap h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 0.6rem;
+}
+
+.success-wrap p {
+  font-size: 0.9rem;
+  color: var(--ink-3);
+  max-width: 320px;
+  margin: 0 auto 2rem;
+}
+
+.success-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-4);
+  background: var(--surface);
+  letter-spacing: 0.005em;
+}
+
+
+/* ================================================================
+   UTILITY
+   ================================================================ */
+.text-red   { color: var(--red); }
+.text-muted { color: var(--ink-3); }
+.text-small { font-size: 0.83rem; }
+.mt-1  { margin-top: 0.5rem; }
+.mt-2  { margin-top: 1rem; }
+.mt-3  { margin-top: 1.5rem; }
+.mt-4  { margin-top: 2rem; }
+.mb-2  { margin-bottom: 1rem; }
+
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 640px) {
+  .navbar { padding: 0 1rem; gap: 1rem; }
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 0.35rem 0.5rem; font-size: 0.82rem; }
+  .container { padding: 2rem 1rem; }
+  .form-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .step { border-right: none; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .hero { padding: 3rem 0 2.5rem; }
+  .hero h1 { font-size: 2rem; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .blood-types-row { gap: 0; }
+  .blood-type-chip { min-width: 40px; padding: 0.7rem 0.5rem; }
+  .donor-grid { grid-template-columns: 1fr; }
+  .auth-wrap { align-items: flex-start; padding-top: 2rem; }
+}
