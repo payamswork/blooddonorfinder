@@ -3,28 +3,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import csv
 import os
+import shutil
 
-# ---------------------------------------------------------------------------
-# Vercel runs serverless — the working directory is read-only except /tmp.
-# We copy donors.db (bundled with the repo) into /tmp on first cold start.
-# ---------------------------------------------------------------------------
-
-BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
-REPO_DB   = os.path.join(BASE_DIR, "donors.db")   # read-only, shipped in repo
-TMP_DB    = "/tmp/donors.db"                        # writable copy at runtime
-CSV_FILE  = os.path.join(BASE_DIR, "donors.csv")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_DB  = os.path.join(BASE_DIR, "donors.db")
+TMP_DB   = "/tmp/donors.db"
+CSV_FILE = os.path.join(BASE_DIR, "donors.csv")
 
 app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "templates"))
 app.secret_key = os.environ.get("SECRET_KEY", "blooddonorjk2025_secure")
 
 
 def get_db_path():
-    """Return the writable DB path, seeding from the repo copy if needed."""
     if not os.path.exists(TMP_DB):
         if os.path.exists(REPO_DB):
-            import shutil
             shutil.copy2(REPO_DB, TMP_DB)
-        # Create fresh schema + seed from CSV if no repo DB either
         _bootstrap_db(TMP_DB)
     return TMP_DB
 
@@ -54,8 +47,6 @@ def _bootstrap_db(db_path):
         )
     """)
     conn.commit()
-
-    # Seed from CSV if donors table is empty
     count = conn.execute("SELECT COUNT(*) FROM donors").fetchone()[0]
     if count == 0 and os.path.exists(CSV_FILE):
         with open(CSV_FILE, newline="", encoding="utf-8") as f:
@@ -86,10 +77,6 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-
-# ---------------------------------------------------------------------------
-# Routes
-# ---------------------------------------------------------------------------
 
 @app.route("/")
 def home():
